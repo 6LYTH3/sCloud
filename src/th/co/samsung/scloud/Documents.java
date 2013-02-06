@@ -26,6 +26,14 @@ public class Documents {
 		notifyDocumentsChange();
 	}
 
+	public int size() {
+		return this.documents.size();
+	}
+
+	public Document get(int position) {
+		return this.documents.get(position);
+	}
+
 	private void notifyDocumentsChange() {
 		if (this.onDocumentsChangeListener != null) {
 			this.onDocumentsChangeListener.onDucumentChange(this);
