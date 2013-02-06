@@ -3,12 +3,20 @@ package th.co.samsung.scloud;
 import th.co.samsung.scloud.Documents.OnDocumentsChangeListener;
 import android.os.Bundle;
 import android.app.Activity;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 
 public class MainActivity extends Activity implements OnDocumentsChangeListener {
 
+	private static final int MENU_MOVE_ITEM = 2004;
+	private static final int MENU_RENAME_ITEM = 2003;
+	private static final int MENU_DELETE_ITEM = 2002;
+	private static final int MENU_SHARE_ITEM = 2001;
 	private static final int MENU_SETTING_ITEM = 1005;
 	private static final int MENU_HELP_ITEM = 1004;
 	private static final int MENU_REFRESH_ITEM = 1003;
@@ -46,6 +54,7 @@ public class MainActivity extends Activity implements OnDocumentsChangeListener 
 		};
 		mListView.setAdapter(mDocumentAdapter);
 		mDocuments.setOnDocumentsChangeListener(this);
+		registerForContextMenu(mListView);
 
 	}
 
@@ -82,8 +91,43 @@ public class MainActivity extends Activity implements OnDocumentsChangeListener 
 	}
 
 	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		menu.add(Menu.NONE, MENU_SHARE_ITEM, Menu.NONE,
+				getString(R.string.share));
+		menu.add(Menu.NONE, MENU_DELETE_ITEM, Menu.NONE,
+				getString(R.string.delete));
+		menu.add(Menu.NONE, MENU_RENAME_ITEM, Menu.NONE,
+				getString(R.string.rename));
+		menu.add(Menu.NONE, MENU_MOVE_ITEM, Menu.NONE, getString(R.string.move));
+
+		super.onCreateContextMenu(menu, v, menuInfo);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
+				.getMenuInfo();
+		switch (item.getItemId()) {
+		case MENU_SHARE_ITEM:
+			break;
+		case MENU_DELETE_ITEM:
+			break;
+		case MENU_RENAME_ITEM:
+			break;
+		case MENU_MOVE_ITEM:
+			break;
+		}
+		return super.onContextItemSelected(item);
+	}
+
+	@Override
 	public void onDucumentChange(Documents documents) {
 		mDocumentAdapter.notifyDataSetChanged();
+	}
+
+	public void showMenu(View view) {
+		this.openContextMenu(view);
 	}
 
 }
